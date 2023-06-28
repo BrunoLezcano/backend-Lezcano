@@ -10,8 +10,8 @@ class Product {
 }
 
 class ProductManager {
-    constructor(products) {
-        this.products = [];
+    constructor(path) {
+        this.path = path;
     }
 
     checkCodeExist = (checkProduct) => {
