@@ -1,4 +1,4 @@
-const fs = require("fs");
+import fs from "fs";
 
 class Product {
     constructor(title, description, price, thumbnail, code, stock) {
@@ -11,7 +11,7 @@ class Product {
     }
 }
 
-class ProductManager {
+export class ProductManager {
     constructor(path) {
         this.path = path;
         this.allProducts = this.getProductsPath();
@@ -35,10 +35,10 @@ class ProductManager {
     }
 
     checkCodeExist(arrayCheck, productCheck) {
-        let salud = arrayCheck.some((looked) => {
+        let result = arrayCheck.some((looked) => {
             return looked.code === productCheck.code;
         });
-        return salud;
+        return result;
     }
 
     checkIdExist(searchId, arrayNeed) {
@@ -90,7 +90,7 @@ class ProductManager {
         const listadoProductos = await this.allProducts;
         if (this.checkIdExist(findProductId, listadoProductos)) {
             const theProduct = this.findTheProduct(findProductId, listadoProductos);
-            console.log(theProduct);
+            return theProduct;
         } else {
             console.log(`Lo siento epro el ID # ${findProductId} # no está en la lista de productos`);
         }
@@ -126,7 +126,7 @@ class ProductManager {
 
     getProducts = async () => {
         const listadoProductos = await this.allProducts;
-        listadoProductos.length == 0 ? console.log("no hay productos listados") : console.log(listadoProductos);
+        return listadoProductos.length == 0 ? console.log("no hay productos listados") : this.allProducts;
     };
 }
 
@@ -143,3 +143,4 @@ const nuevoManager = new ProductManager("./productos.json");
 
 //nuevoManager.updateProductById(1, new Product("caramelo", "caramelos varios", 12, "http/askdjklfds", 35, 2000));
 //nuevoManager.deleteProduct(1);
+nuevoManager.getProducts();

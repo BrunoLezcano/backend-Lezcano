@@ -1,1 +1,29 @@
-[]
+[
+    {
+        "title": "coca",
+        "description": "bebida cola",
+        "price": 500,
+        "thumbnail": "http/askdjklfds",
+        "code": 10,
+        "stock": 25,
+        "id": 1
+    },
+    {
+        "title": "pepsi",
+        "description": "bebida de hierbas",
+        "price": 500,
+        "thumbnail": "http/askdjklfds",
+        "code": 11,
+        "stock": 25,
+        "id": 2
+    },
+    {
+        "title": "caramelo",
+        "description": "caramelos sabores varios",
+        "price": 10,
+        "thumbnail": "http/askdjklfds",
+        "code": 35,
+        "stock": 1500,
+        "id": 3
+    }
+]
