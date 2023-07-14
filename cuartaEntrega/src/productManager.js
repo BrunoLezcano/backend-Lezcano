@@ -1,13 +1,14 @@
 import fs from "fs";
 
-class Product {
-    constructor(title, description, price, thumbnail, code, stock) {
+export class Product {
+    constructor(title, description, price, thumbnail, code, stock, status = true) {
         (this.title = title),
             (this.description = description),
             (this.price = price),
             (this.thumbnail = thumbnail),
             (this.code = code),
-            (this.stock = stock);
+            (this.stock = stock),
+            (this.status = status);
     }
 }
 
@@ -130,18 +131,3 @@ export class ProductManager {
         return listadoProductos.length == 0 ? console.log("no hay productos listados") : this.allProducts;
     };
 }
-
-const nuevoManager = new ProductManager("./productos.json");
-
-//nuevoManager.addProduct(new Product("coca", "bebida cola", 500, "http/askdjklfds", 10, 25)); // INGRESA PRODUCTO
-
-//nuevoManager.addProduct("hola"); // AQUI COMPROBAMOS QUE HAY QUE AGREGAR UN TIPO DE PRODUCTO DEL TIPO PRODUCT
-//nuevoManager.addProduct(new Product("pepsi", "bebida de hierbas", 500, "http/askdjklfds", 11, 25)); // INGRESA PRODUCTO
-//nuevoManager.addProduct(new Product("mate cocido", "bebida de hierbas", 500, "http/askdjklfds", 11, 25)); // FALLA POR CODE
-//nuevoManager.addProduct(new Product("caramelo", "caramelos sabores varios", 10, "http/askdjklfds", 35, 1500)); // INGRESA PRODUCTO
-//nuevoManager.getProductById(2);
-//nuevoManager.getProducts();
-
-//nuevoManager.updateProductById(1, new Product("caramelo", "caramelos varios", 12, "http/askdjklfds", 35, 2000));
-//nuevoManager.deleteProduct(1);
-nuevoManager.getProducts();

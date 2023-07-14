@@ -1,11 +1,9 @@
 import express from "express";
-import { ProductManager } from "./segundaEntrega.js";
+import ProductManager from "./segundaEntrega.js";
 
 const app = express();
 
 const newManager = new ProductManager("productos.json");
-
-console.log(newManager.getProducts());
 
 app.get("/", (req, res) => {
     res.send('<h1 style="color:red" >aca vamos con express <h1>');
@@ -22,6 +20,7 @@ app.get("/productos", async (req, res) => {
             res.send(response);
         }
     } catch (error) {
+        res.status(500).send("Error en el servidor");
         console.log(error);
     }
 });
@@ -32,6 +31,7 @@ app.get("/productos/:thisId", async (req, res) => {
         const answer = await newManager.getProductById(thisId);
         res.send(answer);
     } catch (error) {
+        res.status(500).send("Error en el servidor");
         console.log(error);
     }
 });
