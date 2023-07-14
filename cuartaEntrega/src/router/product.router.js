@@ -34,13 +34,14 @@ router.get("/:thisId", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-    //const ingresado = new Product();
-    //{} = req.body;
-    //!(ingresado instanceof Product) && res.json({ message: "no se permite ingresar ese producto" });
+    const { title, description, price, thumbnail, code, stock, status } = req.body;
+
+    let product = new Product(title, description, price, thumbnail, code, stock, status);
+    const resp = await newManager.addProduct(product);
     try {
-        const response = await newManager.addProduct(ingresado);
-        res.json({ message: "cargado", data: response });
+        res.json({ message: "cargado", data: resp });
     } catch (error) {
+        res.status(500).json({ error: "Error en el servidor" });
         console.log(error);
     }
 });

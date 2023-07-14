@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export class Product {
-    constructor(title, description, price, thumbnail, code, stock, status = true) {
+    constructor(title, description, price, thumbnail, code, stock, status) {
         (this.title = title),
             (this.description = description),
             (this.price = price),
@@ -69,23 +69,20 @@ export class ProductManager {
     }
 
     async addProduct(productAdd) {
-        if (productAdd instanceof Product) {
-            let listParsed = await this.allProducts;
-            if (this.checkLengthProducts(listParsed)) {
-                const newProduct = { ...productAdd, id: 1 };
+        let listParsed = await this.getProductsPath();
+        if (this.checkLengthProducts(listParsed)) {
+            const newProduct = { ...productAdd, id: 1 };
+            this.updateInfoPath(newProduct, listParsed);
+        } else {
+            const thisCode = this.checkCodeExist(listParsed, productAdd);
+            if (!thisCode) {
+                const newProduct = this.addIdNumber(productAdd, listParsed);
                 this.updateInfoPath(newProduct, listParsed);
             } else {
-                const thisCode = this.checkCodeExist(listParsed, productAdd);
-                if (!thisCode) {
-                    const newProduct = this.addIdNumber(productAdd, listParsed);
-                    this.updateInfoPath(newProduct, listParsed);
-                } else {
-                    console.log("codigo existente, imposible ingresar");
-                }
+                console.log("codigo existente, imposible ingresar");
             }
-        } else {
-            console.log("imposible ingresar un producto que no sea del tipo producto");
         }
+        this.allProducts = await this.getProductsPath();
     }
 
     getProductById = async (findProductId) => {
