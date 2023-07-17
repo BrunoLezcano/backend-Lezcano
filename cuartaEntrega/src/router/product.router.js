@@ -23,8 +23,8 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:thisId", async (req, res) => {
+    const { thisId } = req.params;
     try {
-        const { thisId } = req.params;
         const answer = await newManager.getProductById(thisId);
         res.send(answer);
     } catch (error) {
@@ -44,6 +44,22 @@ router.post("/", async (req, res) => {
         res.status(500).json({ error: "Error en el servidor" });
         console.log(error);
     }
+});
+
+router.put("/:thisId", async (req, res) => {
+    const { thisId } = req.params;
+    const { objeto } = req.body;
+
+    const totalProducts = await newManager.getProducts();
+
+    try {
+        if (newManager.checkIdExist(thisId, totalProducts)) {
+            const productModified = await newManager.updateProductById(thisId, objeto);
+            res.json({ message: "cargado", data: productModified });
+        } else {
+            res.send(`No se encuentra el id ${thisId} en el listadode productos.`);
+        }
+    } catch (error) {}
 });
 
 export default router;

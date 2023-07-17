@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export class Product {
-    constructor(title, description, price, thumbnail, code, stock, status) {
+    constructor(title, description, price, thumbnail = [], code, stock, status = true) {
         (this.title = title),
             (this.description = description),
             (this.price = price),
@@ -9,6 +9,12 @@ export class Product {
             (this.code = code),
             (this.stock = stock),
             (this.status = status);
+    }
+}
+
+export class ProductCart {
+    constructor(idProducto, quantity) {
+        (this.idProducto = idProducto), (this.quantity = quantity);
     }
 }
 
@@ -69,20 +75,24 @@ export class ProductManager {
     }
 
     async addProduct(productAdd) {
-        let listParsed = await this.getProductsPath();
-        if (this.checkLengthProducts(listParsed)) {
-            const newProduct = { ...productAdd, id: 1 };
-            this.updateInfoPath(newProduct, listParsed);
-        } else {
-            const thisCode = this.checkCodeExist(listParsed, productAdd);
-            if (!thisCode) {
-                const newProduct = this.addIdNumber(productAdd, listParsed);
+        if (productAdd instanceof Product) {
+            let listParsed = await this.getProductsPath();
+            if (this.checkLengthProducts(listParsed)) {
+                const newProduct = { ...productAdd, id: 1 };
                 this.updateInfoPath(newProduct, listParsed);
             } else {
-                console.log("codigo existente, imposible ingresar");
+                const thisCode = this.checkCodeExist(listParsed, productAdd);
+                if (!thisCode) {
+                    const newProduct = this.addIdNumber(productAdd, listParsed);
+                    this.updateInfoPath(newProduct, listParsed);
+                } else {
+                    console.log("codigo existente, imposible ingresar");
+                }
             }
+            this.allProducts = await this.getProductsPath();
+        } else {
+            console.log("imposible ingresar un producto que no sea del tipo producto");
         }
-        this.allProducts = await this.getProductsPath();
     }
 
     getProductById = async (findProductId) => {
@@ -108,14 +118,15 @@ export class ProductManager {
 
     updateProductById = async (idNeed, changesProduct) => {
         const listadoProductos = await this.allProducts;
-        if (this.checkIdExist(idNeed, listadoProductos) && changesProduct instanceof Product) {
+        if (this.checkIdExist(idNeed, listadoProductos)) {
             const updatedArray = listadoProductos.map((product) => {
-                if (product.id === idNeed) {
+                if (product.id == idNeed) {
                     return { ...product, ...changesProduct };
                 } else {
                     return product;
                 }
             });
+
             await fs.promises.writeFile(this.path, JSON.stringify(updatedArray), "utf-8");
             console.log("Producto modificado con exito.");
         } else {
@@ -126,5 +137,69 @@ export class ProductManager {
     getProducts = async () => {
         const listadoProductos = await this.allProducts;
         return listadoProductos.length == 0 ? console.log("no hay productos listados") : this.allProducts;
+    };
+}
+
+export class cartManager {
+    constructor(path) {
+        this.path = path;
+        this.allProductsFromCart = this.getListsPath();
+    }
+
+    async getListsPath() {
+        try {
+            let List = await fs.promises.readFile(this.path, "utf-8");
+            let listParsed = JSON.parse(List);
+            return listParsed;
+        } catch (error) {
+            console.log(`el error es ${error}`);
+            throw error;
+        }
+    }
+
+    async updateListCart(newProduct, arrayChange) {
+        arrayChange.push(newProduct);
+        await fs.promises.writeFile(this.path, JSON.stringify(arrayChange));
+    }
+
+    checkExistProduct(productId, arrayNeed) {
+        const wanted = arrayNeed.some((product) => {
+            return product.idProducto == productId;
+        });
+        return wanted;
+    }
+
+    async addProductCart(idForCart, quantity) {
+        const quantityOfCart = await this.allProductsFromCart;
+        if (this.checkExistProduct(idForCart, quantityOfCart)) {
+            const updatedCart = quantityOfCart.map((objectCart) => {
+                if (objectCart.idProducto == idForCart) {
+                    objectCart.quantity += quantity;
+                }
+                return objectCart;
+            });
+
+            await fs.promises.writeFile(this.path, JSON.stringify(updatedCart));
+        } else {
+            const productCart = new ProductCart(idForCart, quantity);
+            this.updateListCart(productCart, quantityOfCart);
+        }
+    }
+
+    getCartProductById = async (idNeed) => {
+        const quantityOfCart = await this.allProductsFromCart;
+        if (quantityOfCart.length > 0) {
+            const wanted = quantityOfCart.find((productCart) => {
+                return productCart.idProducto == idNeed;
+            });
+            return wanted;
+        } else {
+            console.log(`El producto ${idNeed} no existe en el carrito.`);
+        }
+    };
+
+    getCartProducts = async () => {
+        const listadoProductos = await this.allProductsFromCart;
+        return listadoProductos.length == 0 ? console.log("no hay productos en el carrito") : this.allProductsFromCart;
     };
 }
