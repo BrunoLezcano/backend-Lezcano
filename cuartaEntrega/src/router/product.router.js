@@ -48,13 +48,13 @@ router.post("/", async (req, res) => {
 
 router.put("/:thisId", async (req, res) => {
     const { thisId } = req.params;
-    const { objeto } = req.body;
+    const objeto = req.body;
 
     const totalProducts = await newManager.getProducts();
-
+    const newObject = { ...objeto };
     try {
         if (newManager.checkIdExist(thisId, totalProducts)) {
-            const productModified = await newManager.updateProductById(thisId, objeto);
+            const productModified = await newManager.updateProductById(thisId, newObject);
             res.json({ message: "cargado", data: productModified });
         } else {
             res.send(`No se encuentra el id ${thisId} en el listadode productos.`);
