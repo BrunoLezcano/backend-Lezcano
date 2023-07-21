@@ -1,25 +1,31 @@
 <div class="container text-center">
     <br />
     <div class="row">
-
         <div class="col">
             <div class="card text-center">
                 <div class="card-header">
                     {{tituloProductos}}
                 </div>
                 {{#each productos}}
-                    <div class="card" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="..." />
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <br />
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-5">
+                            <div class="card">
+                                <img src="{{this.thumbnail}}" class="card-img-top" alt="{{this.title}}" />
+                                <div class="card-body">
+                                    <h5 class="card-title">{{title}}</h5>
+                                    <p class="card-text">{{description}}</p>
+                                    <p class="card-text">Codigo: {{code}}</p>
+                                    <p class="card-text">Stock: {{stock}}</p>
+                                </div>
+                            </div>
+                            <br />
                         </div>
+                        <div class="col"></div>
                     </div>
                 {{/each}}
             </div>
         </div>
-
     </div>
 </div>
