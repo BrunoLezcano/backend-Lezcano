@@ -6,8 +6,14 @@ import { Server } from "socket.io";
 import { __dirname } from "./utils.js";
 import { join } from "path";
 
+////////////
+// PRODUCT MANAGER, for changes collection of products.
+import { ProductManager } from "./productManager.js";
+
 const PORT = 3000;
 const app = express();
+
+let collectionProducts = new ProductManager("./productos.json");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -19,7 +25,7 @@ app.set("views", join(__dirname, "./src/views"));
 app.use(express.static("public"));
 
 app.use("/", routerHome);
-app.use("/realTimeProducts/", routerRealTime);
+app.use("/realTimeProducts", routerRealTime);
 
 const server = app.listen(PORT, () => {
     console.log(`corriendo en el puerto ${PORT}`);
@@ -37,7 +43,8 @@ ioServer.on("connection", (socket) => {
         console.log("recibido ", data);
     });
 
-    socket.on("agregarProducto", () => {
-        console.log("lalalala");
+    socket.on("agregarProducto", async (newProduct) => {
+        await collectionProducts.addProduct(newProduct);
+        socket.emit("saludar");
     });
 });

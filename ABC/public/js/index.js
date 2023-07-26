@@ -1,6 +1,6 @@
-const socket = io();
+import { Product } from "../../productManager";
 
-socket.emit("connection", "nuevo  cliente conectado");
+const socket = io();
 
 document.getElementById("productForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -11,6 +11,10 @@ document.getElementById("productForm").addEventListener("submit", (e) => {
     const code = document.getElementById("code").value;
     const stock = document.getElementById("stock").value;
 
-    const theProduct = { title, description, price, thumbnail, code, stock };
-    socket.emit("agregarProducto", { theProduct });
+    const theProduct = new Product(title, description, price, thumbnail, code, stock);
+    socket.emit("agregarProducto", theProduct);
+});
+
+socket.on("saludar", () => {
+    alert("como  vaaaaa");
 });
