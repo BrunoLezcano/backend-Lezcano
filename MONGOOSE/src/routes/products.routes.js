@@ -1,18 +1,17 @@
 import { Router } from "express";
 import ProductModel from "../DAO/models/products.model.js";
-import CartProductModel from "../DAO/models/carts.model.js";
+//import CartProductModel from "../DAO/models/carts.model.js";
+//import MessageModel from "../DAO/models/messages.model.js";
 
 const routerManager = Router();
 
 routerManager.get("/", async (req, res) => {
     try {
-        const result = await ProductModel.find();
-        const cartProducts = await CartProductModel.find();
+        const result = await ProductModel.find().lean();
 
-        res.json({
-            data: result,
-            message: result.length ? "listade usuarios" : "no hay usuarios",
-        });
+        //await CartProductModel.find();
+        //await MessageModel.find();
+        res.render("home", { listado: "Listado de Productos", productos: result, title: "productos" });
     } catch (error) {
         console.log(error);
     }
