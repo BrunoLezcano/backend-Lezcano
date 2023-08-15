@@ -1,0 +1,23 @@
+<div class="d-flex flex-row">
+    <div class="container">
+        <br />
+        <div class="row"><h3 class="col text-center">Lista de Mensajes</h3></div>
+        <br />
+        {{#if totalChat.length}}
+            {{#each totalChat}}
+                <div class="card">
+                    <h5 class="card-header">{{user}}</h5>
+                    <div class="card-body">
+                        <p class="card-text">{{message}}</p>
+                    </div>
+                </div>
+                <br />
+            {{/each}}
+
+        {{else}}
+            <div class="p-2">No hay conversaciones previas</div>
+        {{/if}}
+
+    </div>
+
+</div>
