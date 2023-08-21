@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import mongoosepaginate from "mongoose-paginate-v2";
+//import mongoosepaginate from "mongoose-paginate-v2";
 
 const cartProductsCollection = "cartProducts";
 
@@ -8,7 +8,7 @@ const cartProductSchema = new mongoose.Schema({
     idProduct: { type: mongoose.Schema.Types.ObjectId, ref: "products" },
 });
 
-cartProductSchema.plugin(mongoosepaginate);
+//cartProductSchema.plugin(mongoosepaginate);
 
 const CartProductModel = mongoose.model(cartProductsCollection, cartProductSchema);
 

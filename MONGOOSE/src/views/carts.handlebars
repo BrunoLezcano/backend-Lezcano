@@ -1,5 +1,50 @@
-<div>
+<div class="container text-center">
+    <div class="row">
+        <div class="col-8">
+            <br />
+            <div class="card">
+                <h5 class="card-header">{{title}}</h5>
+                <div class="card-body">
+                    {{#each listCart}}
+                        <div class="container text-center">
+                            <div class="row">
+                                <div class="col-6">
+                                    <p>{{idProduct.title}} </p>
+                                </div>
+                                <div class="col-4">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-4"><button
+                                                    class="btn btn-primary"
+                                                    type="button"
+                                                >-</button></div>
+                                            <div class="col-4"><p>{{quantity}}</p></div>
+                                            <div class="col-4"><button
+                                                    class="btn btn-primary"
+                                                    type="button"
+                                                >+</button></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <button type="button" class="btn btn-outline-primary">Eliminar</button>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
 
-    <h2> ACA DESDE CART VIEW </h2>
+                </div>
 
+                <div class="container text-center">
+                    <div class="row justify-content-md-end">
+                        <button type="button" class="btn btn-outline-info">vaciar carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            segundamitad
+        </div>
+    </div>
 </div>
