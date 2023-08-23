@@ -6,11 +6,13 @@ const routerManager = Router();
 routerManager.get("/", async (req, res) => {
     try {
         const result = await ProductModel.paginate({}, { limit: 10, page: 1 });
-        //const result = await ProductModel.find();////ACA TRAIA TODO POR DEFECTO
-        console.log(result);
-        res.send("ok");
-
-        //res.render("home", { listado: "Listado de Productos", productos: result, title: "productos" });
+        const theProducts = await ProductModel.find().lean();
+        console.log(result); // resultado de lapaginacion
+        res.cookie("la cookie", "este es el contenido de la cookie", { maxAge: 20000 }).render("home", {
+            listado: "Listado de Productos",
+            productos: theProducts,
+            title: "productos",
+        });
     } catch (error) {
         console.log(error);
     }
